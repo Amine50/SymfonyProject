@@ -1,0 +1,62 @@
+teck_events_homepage:
+    path:     /
+    defaults: { _controller: TeckEventsBundle:Default:index }
+
+new_event:
+    path:     /new_event
+    defaults: { _controller: TeckEventsBundle:Event:newEvent }
+
+address:
+    path:     /address
+    defaults: { _controller: TeckEventsBundle:Event:searchAddress }
+
+new_categorie:
+    path:     /admin/new_categorie
+    defaults: { _controller: TeckEventsBundle:Event:newCategorie }
+
+events_by_user:
+    path:     /events_by_user
+    defaults: { _controller: TeckEventsBundle:Event:getEventByUser }
+
+all_events:
+    path:     /all_events
+    defaults: { _controller: TeckEventsBundle:Event:getAllEvent }
+
+all_events_Admin:
+    path:     /admin/all_events
+    defaults: { _controller: TeckEventsBundle:Event:getAllEventAdmin }
+
+approve_event:
+    path:     /admin/approve/{id}
+    defaults: { _controller: TeckEventsBundle:Event:approveEvent }
+
+refuse_event:
+    path:     /admin/refuse/{id}
+    defaults: { _controller: TeckEventsBundle:Event:refuseEvent }
+
+delete_event:
+    path:     /admin/delete/{id}
+    defaults: { _controller: TeckEventsBundle:Event:deleteEvent }
+
+event_by_id:
+    path:     /event_by_id/{id}
+    defaults: { _controller: TeckEventsBundle:Event:getEventById }
+
+update_event:
+    path:     /update_event/{id}
+    defaults: { _controller: TeckEventsBundle:Event:updateEvent }
+
+participation_event:
+    path:     /participation_event/{id}/{status}
+    defaults: { _controller: TeckEventsBundle:Event:participationEvent }
+
+
+notfication:
+    path:     /notification
+    defaults: { _controller: TeckEventsBundle:Notification:AllNotificationJson }
+    methods:  ['GET','POST']
+
+notfication_status:
+    path:     /notification_status
+    defaults: { _controller: TeckEventsBundle:Notification:UpdateNotificationJson }
+    methods:  ['GET','POST']

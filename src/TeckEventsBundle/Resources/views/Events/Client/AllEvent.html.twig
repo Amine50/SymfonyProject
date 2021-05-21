@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+    {% block header %}
+        <div class="page-header events-page-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <header class="entry-header">
+                            <h1 class="entry-title">All Events.</h1>
+                        </header>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
+
+{% block body %}
+
+    {% set flashbag_notices1 = app.session.flashbag.get('notice1') %}
+    {% if flashbag_notices1 is not empty  %}
+        {% for notice1 in flashbag_notices1 %}
+            <div class="container">
+                <div class="alert alert-danger " role="alert">
+                    <strong>Error : </strong> {{ notice1 }} <a href="#" class="close" data-dismiss="danger" aria-label="close">&times;</a>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+    <div class="events-list-page">
+    <form class="events-search" method="POST">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-md-3">
+                    <input type="date" placeholder="Date" name="search_date">
+                </div>
+
+                <div class="col-12 col-md-3">
+                    <input type="text" placeholder="Event" name="search_name">
+                </div>
+
+                <div class="col-12 col-md-3">
+                    <input type="text" placeholder="Location" name="search_location">
+                </div>
+
+                <div class="col-12 col-md-3">
+                    <input class="btn gradient-bg" type="submit" value="Search Events">
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="container">
+        <div class="row events-list">
+            {% for e in events %}
+            <div class="col-12 col-lg-6 single-event">
+                <figure class="events-thumbnail">
+                    <a href="#"><img src="{{ asset('uploads/brochures/' ~ e.photoEvent) }}" alt="{{ e.nameEvent }}" style="width: 540px ; height: 300px" ></a>
+                </figure>
+
+                <div class="event-content-wrap">
+                    <header class="entry-header flex justify-content-between">
+                        <div>
+                            <h2 class="entry-title"><a href="#">{{ e.nameEvent }}</a></h2>
+
+                            <div class="event-location"><a href="#">{{ e.addressEvent.cityAddress }}, {{ e.addressEvent.addressExact }}</a></div>
+
+                            <div class="event-date">Event Date : {{ e.dateEvent|date ('Y-m-d') }} / Date Creation :{{ e.dateCreationEvent|date ('Y-m-d') }}</div>
+                        </div>
+
+                        <div class="event-cost flex justify-content-center align-items-center">
+                            Categorie : <span>{{ e.categorieEvent.nameCategorie }}</span>
+                        </div>
+                    </header>
+                    <div class="entry-content">
+                        <p>{{ e.descriptionEvent }}.</p>
+                    </div>
+
+                    <footer class="entry-footer">
+                        <a href="{{path('event_by_id', {id: e.id})}}">Details</a>
+                    </footer>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="load-more-btn">
+                    <a class="btn gradient-bg" href="#">Load More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}

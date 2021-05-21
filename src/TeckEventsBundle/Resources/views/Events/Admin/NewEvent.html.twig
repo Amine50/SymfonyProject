@@ -1,0 +1,173 @@
+{% extends 'baseAdmin.html.twig' %}
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset ('assets/css/chosen.min.css') }}">
+        <link rel="stylesheet" href="{{ asset ('assets/css/bootstrap-datepicker3.css') }}">
+    {% endblock %}
+{% block title %}
+    New Event
+{%  endblock %}
+
+{% block breadcrumbs %}
+    <div class="breadcrumbs">
+        <div class="col-sm-4">
+            <div class="page-header float-left">
+                <div class="page-title">
+                    <h1>New Event</h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="page-header float-right">
+                <div class="page-title">
+                    <ol class="breadcrumb text-right">
+                        <li><a href="#">Event</a></li>
+                        <li class="active">New Event</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+{%  endblock %}
+
+{% block body %}
+    {% set flashbag_notices = app.session.flashbag.get('notice') %}
+    {% if flashbag_notices is not empty  %}
+        {% for notice in flashbag_notices %}
+            <div class="container">
+                <div class="alert alert-danger " role="alert">
+                    <strong>Oops !</strong> {{ notice }} <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+    <div class="content mt-3">
+        <div class="animated fadeIn">
+
+            <div class="row">
+
+                <div class="col-xs-12 col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong>Event</strong> <small> Enter the details of your event</small>
+                        </div>
+                        <form enctype="multipart/form-data" class="default-form" method="POST">
+                        <div class="card-body card-block">
+                            <div class="form-group">
+                                <label class=" form-control-label">Event date</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                    <input type="text" class="datepicker form-control" placeholder="Please choose a date..."  name="form_date" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class=" form-control-label">Name Event</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="fa fa-info-circle"></i></div>
+                                    <input class="form-control" name="form_name" placeholder="Name " required>
+                                </div>
+                                <small class="form-text text-muted">ex. Teck Event(</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label class=" form-control-label">Event Categorie </label>
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="fa fa-folder-open"></i></div>
+                                    <select data-placeholder="Choose a Categorie..." class="form-control" name="form_categorie" required>
+                                        <option value="" disabled selected>Choose a Categorie ...</option>
+                                        {% for cat in categories %}
+                                            <option value="{{ cat.id }}">{{ cat.nameCategorie }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <small class="form-text text-muted"></small>
+                            </div>
+                            <div class="col-6">
+                            <div class="form-group">
+                                <label class=" form-control-label">City Event</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="fa fa-map-marker"></i></div>
+                                    <select class="form-control" id="form_city" name="form_city" onchange='select()' required>
+                                        <option value="" disabled selected>Choose a City...</option>
+                                        <option value="Ariana">Ariana</option>
+                                        <option value="Bizerte">Bizerte</option>
+                                        <option value="Tunis">Tunis</option>
+                                        <option value="Tunis">Sousse</option>
+                                    </select>
+                                </div>
+                                <small class="form-text text-muted"></small>
+                            </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label class=" form-control-label">Address Event</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon"><i class="fa fa-location-arrow"></i></div>
+                                        <input list="address_result" name="form_address" id="address_input" placeholder="Exact Address " oninput='onInput()'  required class="form-control" disabled>
+                                        <datalist id="address_result">
+                                        </datalist>
+                                    </div>
+                                    <small class="form-text text-muted">ex. Rue ...(</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class=" form-control-label">Image Event</label>
+                                <div class="input-group">
+
+                                    <input type="file" class="form-control" name="form_photo" required>
+                                </div>
+                                <small class="form-text text-muted"></small>
+                            </div>
+                            <div class="form-group">
+                                <label class=" form-control-label">Description Event</label>
+                                <div class="input-group">
+                                    <textarea name="form_description" id="textarea-input" rows="9" placeholder="Description ..." class="form-control" required></textarea>
+                                </div>
+                                <small class="form-text text-muted"></small>
+                            </div>
+                        </div>
+                        <div class="card-footer" style="padding-bottom: 50px;padding-top: 20px" >
+                            <button type="submit" class="btn btn-primary btn-sm" style="width: 200px">
+                                <i class="fa fa-plus-circle"></i> Add
+                            </button>
+                            <button type="reset" class="btn btn-danger btn-sm" style="width: 200px">
+                                <i class="fa fa-ban"></i> Cancel
+                            </button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div><!-- .animated -->
+    </div><!-- .content -->
+
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset ('assets/js/bootstrap-datepicker.js') }}"></script>
+    <script>
+        $('.datepicker').datepicker({
+        });
+
+        var Address=null;
+        $("document").ready(function () {
+
+            $('#address_input').bind('input', function() {
+                $('#address_result').empty();
+                var city = document.getElementById("form_city").value;
+                console.log(city)
+                $.ajax({url: "http://localhost/PiTeckWeb/web/app_dev.php/teck_events/address?plein_text="+$(this).val()+"&city="+city, success: function(result){
+                        $.each( result, function( key, value ) {
+                            $('#address_result').append("<option id='"+value.id+"' value='" + value.addressExact+"'>"+value.cityAddress+"</option>");
+                            console.log(value.idCtegorie);
+                        });
+                    }});
+            });
+
+            $('#address_input').click(function() {$(this).value = "";});
+
+        });
+
+        function select() {
+            document.getElementById("address_input").disabled = false;
+        }
+    </script>
+{% endblock %}

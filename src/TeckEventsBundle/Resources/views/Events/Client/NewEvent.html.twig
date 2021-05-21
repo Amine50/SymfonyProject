@@ -1,0 +1,133 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset ('assets/css/chosen.min.css') }}">
+    <link rel="stylesheet" href="{{ asset ('assets/css/bootstrap-datepicker3.css') }}">
+{% endblock %}
+
+    {% block header %}
+        <div class="page-header contact-page-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <header class="entry-header">
+                            <h1 class="entry-title">New Event.</h1>
+                        </header>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
+
+{% block body %}
+
+    {% set flashbag_notices = app.session.flashbag.get('notice') %}
+    {% if flashbag_notices is not empty  %}
+        {% for notice in flashbag_notices %}
+            <div class="container">
+                <div class="alert alert-danger " role="alert">
+                    <strong>Oops !</strong> {{ notice }} <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+    <div class="container">
+        <div class="row elements-wrap">
+            <div class="col-12">
+                <div class="entry-content elements-container">
+                    <a href="{{ path ('events_by_user') }}" class="btn gradient-bg">My Events</a>
+                    <a href="{{ path ('all_events') }}" class="btn gradient">All Events</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="contact-form">
+                    <header class="entry-header elements-heading">
+                        <h2 class="entry-title">Enter the details of your event :</h2>
+                    </header>
+                    <form class="row" enctype="multipart/form-data" method="POST">
+                        <div class="col-12 col-md-4">
+                            <input type="text" class="datepicker" id="datepicker" placeholder="Please choose a date..."  name="form_date" required>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <input type="text" name="form_name" placeholder="Name Event " required>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <input type="file" name="form_photo" required>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <select class="form-control" data-placeholder="Choose a Categorie..." name="form_categorie" required>
+                                <option value="" disabled selected>Choose a Categorie ...</option>
+                                {% for cat in categories %}
+                                    <option value="{{ cat.id }}">{{ cat.nameCategorie }}</option>
+                                {% endfor %}
+                            </select>                        </div>
+                        <div class="col-12 col-md-4">
+                            <select class="form-control" id="form_city" name="form_city" onchange='select()' required>
+                                <option value="" disabled selected>Choose a City...</option>
+                                <option value="Bizerte">Bizerte</option>
+                                <option value="Ariana">Ariana</option>
+                                <option value="Tunis">Tunis</option>
+                                <option value="Sousse">Sousse</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <input type="text" list="address_result" name="form_address" id="address_input" placeholder="Exact Address " oninput='onInput()'  required disabled>
+
+
+                            <datalist id="address_result">
+
+
+                            </datalist>
+                        </div>
+
+                        <div class="col-12">
+                            <textarea placeholder="Message" rows="8" name="form_description"></textarea>
+                        </div>
+
+                        <div class="col-12 flex justify-content-center"><input class="btn gradient-bg" type="submit" value="Add"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset ('assets/js/bootstrap-datepicker.js') }}"></script>
+    <script>
+        $('.datepicker').datepicker({
+        });
+
+
+
+        var Address=null;
+        $("document").ready(function () {
+
+            $('#address_input').bind('input', function() {
+
+
+                $('#address_result').empty();
+                
+                var city = document.getElementById("form_city").value;
+                console.log(city)
+                $.ajax({url: "http://localhost/PiTeckWeb/web/app_dev.php/teck_events/address?plein_text="+$(this).val()+"&city="+city, success: function(result){
+                        $.each( result, function( key, value ) {
+                            $('#address_result').append("<option id='"+value.id+"' value='" + value.addressExact+"'>"+value.cityAddress+"</option>");
+                            console.log(value.idCtegorie);
+                        });
+                    }});
+            });
+
+            $('#address_input').click(function() {$(this).value = "";});
+
+        });
+      
+
+        function select() {
+            document.getElementById("address_input").disabled = false;
+            console.log('entrer');
+        }
+    </script>
+{% endblock %}

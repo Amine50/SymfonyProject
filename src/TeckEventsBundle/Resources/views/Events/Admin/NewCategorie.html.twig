@@ -1,0 +1,133 @@
+{% extends 'baseAdmin.html.twig' %}
+
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset ('assets/css/dataTables.bootstrap4.min.css') }}">
+        <link rel="stylesheet" href="{{ asset ('assets/css/buttons.bootstrap4.min.css') }}">
+    {% endblock %}
+
+
+
+{% block title %}
+    New Categorie
+{%  endblock %}
+
+{% block breadcrumbs %}
+    <div class="breadcrumbs">
+        <div class="col-sm-4">
+            <div class="page-header float-left">
+                <div class="page-title">
+                    <h1>New Categorie</h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="page-header float-right">
+                <div class="page-title">
+                    <ol class="breadcrumb text-right">
+                        <li><a href="#">Event</a></li>
+                        <li class="active">New Categorie</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+{%  endblock %}
+
+{% block body %}
+    {% set flashbag_notices = app.session.flashbag.get('notice') %}
+    {% if flashbag_notices is not empty  %}
+        {% for notice in flashbag_notices %}
+            <div class="container">
+                <div class="alert alert-success " role="alert">
+                    <strong>PS : </strong> {{ notice }} <a href="#" class="close" data-dismiss="success" aria-label="close">&times;</a>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% set flashbag_notices1 = app.session.flashbag.get('notice1') %}
+    {% if flashbag_notices1 is not empty  %}
+        {% for notice1 in flashbag_notices1 %}
+            <div class="container">
+                <div class="alert alert-danger " role="alert">
+                    <strong>Error : </strong> {{ notice1 }} <a href="#" class="close" data-dismiss="danger" aria-label="close">&times;</a>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="content mt-3">
+        <div class="animated fadeIn">
+
+            <div class="row">
+                <div class="col-xs-6 col-sm-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong>List of Categories</strong> <small> Liste of your Categorie</small>
+                        </div>
+                        <div class="card-body">
+                            <table id="bootstrap-data-table-export" class="table table-striped table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                {% for c in categories %}
+                                    <tr>
+                                        <td>{{ c.id }}</td>
+                                        <td>{{ c.nameCategorie }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong>New Categorie</strong> <small> Enter the details of your Categorie</small>
+                        </div>
+                        <form enctype="multipart/form-data" class="default-form" method="POST">
+                        <div class="card-body card-block">
+                            <div class="form-group">
+                                <label class=" form-control-label">Name Categorie</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="fa fa-info-circle"></i></div>
+                                    <input class="form-control" name="form_name" placeholder="Name " required>
+                                </div>
+                                <small class="form-text text-muted">ex. Technologie(</small>
+                            </div>
+                        </div>
+                        <div class="card-footer" style="padding-bottom: 50px;padding-top: 20px" >
+                            <button type="submit" class="btn btn-primary btn-sm" style="width: 200px">
+                                <i class="fa fa-plus-circle"></i> Add
+                            </button>
+                            <button type="reset" class="btn btn-danger btn-sm" style="width: 200px">
+                                <i class="fa fa-ban"></i> Cancel
+                            </button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+        </div><!-- .animated -->
+    </div><!-- .content -->
+
+{% endblock %}
+
+    {% block javascripts %}
+        <script src="{{ asset ('assets/js/jquery.dataTables.min.js') }}"></script>
+        <script src="{{ asset ('assets/js/dataTables.bootstrap4.min.js') }}"></script>
+        <script src="{{ asset ('assets/js/dataTables.buttons.min.js') }}"></script>
+        <script src="{{ asset ('assets/js/buttons.bootstrap4.min.js') }}"></script>
+        <script src="{{ asset ('assets/js/buttons.html5.min.js') }}"></script>
+        <script src="{{ asset ('assets/js/buttons.print.min.js') }}"></script>
+        <script src="{{ asset ('assets/js/buttons.colVis.min.js') }}"></script>
+        <script src="{{ asset ('assets/js/datatables-init.js') }}"></script>
+    {% endblock %}

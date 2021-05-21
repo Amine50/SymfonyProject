@@ -1,0 +1,10 @@
+teck_events:
+    resource: "@TeckEventsBundle/Resources/config/routing.yml"
+    prefix:   /teck_events
+
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"

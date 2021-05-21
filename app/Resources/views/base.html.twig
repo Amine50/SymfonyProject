@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Hello World</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ asset ('assets/css/bootstrap.min.css') }}">
+
+    <!-- FontAwesome CSS -->
+    <link rel="stylesheet" href="{{ asset ('assets/css/font-awesome.min.css') }}">
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="{{ asset ('assets/css/swiper.min.css') }}">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{ asset ('assets/style.css') }}">
+    {% block stylesheets %}
+    {% endblock %}
+</head>
+<body>
+<header class="site-header">
+    <div class="header-bar">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-10 col-lg-2 order-lg-1">
+                    <div class="site-branding">
+                        <div class="site-title">
+                            <a href="#"><img src="{{ asset ('assets/images/logo.png') }}" alt="logo"></a>
+                        </div><!-- .site-title -->
+                    </div><!-- .site-branding -->
+                </div><!-- .col -->
+
+                <div class="col-2 col-lg-7 order-3 order-lg-2">
+                    <nav class="site-navigation">
+                        <div class="hamburger-menu d-lg-none">
+                            <span>aaaa</span>
+                            <span>aaa</span>
+                            <span>aa</span>
+                            <span>aa</span>
+                        </div><!-- .hamburger-menu -->
+
+                        <ul>
+                            <li><a href="#">Home</a></li>
+                            <li><a href="#">About us</a></li>
+
+                            <li><a href="#">News</a></li>
+                            <li><a href="#">Contact</a></li>
+                            <li><a href="{{ path ('all_events') }}">Events</a></li>
+
+
+
+
+                            {% if is_granted("IS_AUTHENTICATED_FULLY") %}
+
+
+                                <script type="text/javascript">
+                                    userid={{ app.user.id|json_encode|raw }} ;
+                                </script>
+
+
+
+                            <li><a href="{{ path ('new_event') }}">New Event</a></li>
+                                <li><a href="{{ path ('events_by_user') }}">My Events</a></li>
+                            {% endif %}
+
+
+
+                        </ul>
+
+
+
+                    </nav><!-- .site-navigation -->
+
+
+                </div><!-- .col -->
+
+
+                <div class="col-lg-3 d-none d-lg-block order-2 order-lg-3">
+                    {% if is_granted("IS_AUTHENTICATED_FULLY") %}
+
+                    <div class="buy-tickets">
+
+                        <nav class="site-navigation">
+
+                            <ul>
+                                <li><a href="#">{{ app.user.username }}</a></li>
+                            </ul>
+
+
+
+                        </nav>
+                        <a class="btn gradient-bg" href="{{ path ('fos_user_security_logout') }}">Logout</a>
+
+
+                        <div class="dropdown">
+                            <br>
+                            <button class="btn btn-primary dropdown-toggle notif" type="button" data-toggle="dropdown" style="width: 150px">
+                                <span class="count"></span>
+                                <i class="fa fa-bell"></i>
+                                </button>
+                            <ul class="dropdown-menu notif-menu" style="width: 250px">
+
+                                
+
+                            </ul>
+                        </div>
+                    </div><!-- .buy-tickets -->
+
+                {% else %}
+
+                    <div class="buy-tickets">
+                        <a class="btn gradient-bg" href="{{ path ('fos_user_security_login') }}">Login / Register</a>
+                    </div><!-- .buy-tickets -->
+
+                {% endif %}
+                </div><!-- .col -->
+            </div><!-- .row -->
+        </div><!-- .container-fluid -->
+    </div><!-- .header-bar -->
+    {% block header %}
+
+    {% endblock %}
+</header><!-- .site-header -->
+{% block body %}
+
+
+{% endblock %}
+
+
+
+
+
+<footer class="site-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <figure class="footer-logo">
+                    <a href="#"><img src="{{ asset ('assets/images/logo.png') }}" alt="logo"></a>
+                </figure>
+
+                <nav class="footer-navigation">
+                    <ul class="flex flex-wrap justify-content-center align-items-center">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About us</a></li>
+                        <li><a href="#">Events</a></li>
+                        <li><a href="#">News</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </nav>
+
+                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+
+                <div class="footer-social">
+                    <ul class="flex flex-wrap justify-content-center align-items-center">
+                        <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                        <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+<div class="back-to-top flex justify-content-center align-items-center">
+    <span><svg viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1395 1184q0 13-10 23l-50 50q-10 10-23 10t-23-10l-393-393-393 393q-10 10-23 10t-23-10l-50-50q-10-10-10-23t10-23l466-466q10-10 23-10t23 10l466 466q10 10 10 23z"/></svg></span>
+</div>
+
+<script type="text/javascript" src="{{ asset ('assets/js/jquery-3.3.1.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset ('assets/js/popper.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset ('assets/js/bootstrap.min.js') }}"></script>
+<script type='text/javascript' src="{{ asset ('assets/js/masonry.pkgd.min.js') }}"></script>
+<script type='text/javascript' src="{{ asset ('assets/js/jquery.collapsible.min.js') }}"></script>
+<script type='text/javascript' src="{{ asset ('assets/js/swiper.min.js') }}"></script>
+<script type='text/javascript' src="{{ asset ('assets/js/jquery.countdown.min.js') }}"></script>
+<script type='text/javascript' src="{{ asset ('assets/js/circle-progress.min.js') }}"></script>
+<script type='text/javascript' src="{{ asset ('assets/js/jquery.countTo.min.js') }}"></script>
+<script type='text/javascript' src="{{ asset ('assets/js/custom.js') }}"></script>
+
+{% block javascripts %}
+
+{% endblock %}
+<script>
+    $(document).ready(function () {
+
+        function load_unseen_notification(view = '') {
+            $.ajax({
+
+                url: "http://localhost/PiTeckWeb/web/app_dev.php/teck_events/notification?plein_text=" + userid,
+                success: function (data) {
+
+
+                    $('.notif-menu').html(data.notification);
+                    if (data.unseen_notification > 0) {
+
+                        $('.count').html(data.unseen_notification);
+
+                    }else {
+                        $('.count').html('0');
+                    }
+                }
+            });
+        }
+
+        load_unseen_notification();
+
+
+        $(document).on('click', '.notif', function () {
+            $('.count').html('');
+            $.ajax({
+
+                url: "http://localhost/PiTeckWeb/web/app_dev.php/teck_events/notification_status",
+                success: function (data) {
+                    console.log(data);
+                }
+            });
+        });
+
+        setInterval(function () {
+            load_unseen_notification();
+            ;
+        }, 5000);
+
+    });
+</script>
+
+
+
+</html>

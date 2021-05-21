@@ -1,0 +1,243 @@
+{% extends 'base.html.twig' %}
+    {% block header %}
+        <div class="page-header events-page-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <header class="entry-header">
+                            <h1 class="entry-title">{{ event.nameEvent }}</h1>
+                        </header>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
+
+{% block body %}
+
+    {% set flashbag_notices1 = app.session.flashbag.get('notice1') %}
+    {% if flashbag_notices1 is not empty  %}
+        {% for notice1 in flashbag_notices1 %}
+            <div class="container">
+                <div class="alert alert-danger " role="alert">
+                    <strong>Error : </strong> {{ notice1 }} <a href="#" class="close" data-dismiss="danger" aria-label="close">&times;</a>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="single-event-page">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 single-event">
+                    <div class="event-content-wrap">
+                        <header class="entry-header flex flex-wrap justify-content-between align-items-end">
+                            <div class="single-event-heading">
+                                <h2 class="entry-title">{{ event.nameEvent }}</h2>
+
+                                <div class="event-location"><a href="#">{{ event.addressEvent.cityAddress }}, {{ event.addressEvent.addressExact }}  </a></div>
+
+                                <div class="event-date">Date Event : {{ event.dateEvent|date ('Y-m-d') }},Date Creation : {{ event.dateCreationEvent|date ('Y-m-d') }}</div>
+
+                                <div class="entry-content elements-container">
+                                        <img src="{{ asset ('assets/images/yes.png') }}" alt="" style="width: 50px;height: 50px">
+                                        <span class="start-counter" data-to="{{ partN.yes}}" data-speed="2000">5555</span>
+                                        <span style="padding-right: 20px">Interested</span>
+                                    <img src="{{ asset ('assets/images/maybe.png') }}" alt="" style="width: 50px;height: 50px">
+                                    <span class="start-counter" data-to="{{ partN.maybe}}" data-speed="2000">5555</span>
+                                    <span style="padding-right: 20px">MAY BE</span>
+
+                                    <img src="{{ asset ('assets/images/no.png') }}" alt="" style="width: 50px;height: 50px">
+                                    <span class="start-counter" data-to="{{ partN.no}}" data-speed="2000">5555</span>
+                                    <span style="padding-right: 20px">Not Interested</span>
+
+                                </div>
+                            </div>
+
+
+
+                                <div class="entry-content elements-container">
+
+
+
+                                <a class="btn gradient-bg" href="{{ path ('all_events') }} " style="width: 175px">All Events</a>
+                                {% if is_granted("IS_AUTHENTICATED_FULLY") %}
+                                    <a class="btn gradient" href="{{ path ('events_by_user') }}" style="width: 175px">My Events</a><br><br>
+
+
+                                    {% if type =='Organizer' %}
+                                    <h4 style="margin-bottom: 10px;width: 350px">You Are {{ type}} of this event</h4>
+                                    <a class="btn dark" href="{{path('update_event', {id: event.id})}}" style="width: 175px" >Update Event</a>
+                                    <a class="btn dark-purple" href="{{path('delete_event', {id: event.id})}}" style="width: 175px">Delete Event</a>
+                                    
+                                    {% else %}
+                                        <div class="entry-content elements-container">
+                                            <a href="{{path('participation_event', {id: event.id,status: 'Interested'})}}" class="btn gradient{% if stausPart =="Interested" %}-bg{% endif %}">Interested</a>
+                                            <a href="{{path('participation_event', {id: event.id,status: 'May Be'})}}" class="btn gradient{% if stausPart =="May Be" %}-bg{% endif %}">May Be</a>
+                                            <a href="{{path('participation_event', {id: event.id,status: 'Not Interested'})}}" class="btn gradient{% if stausPart =="Not Interested" %}-bg{% endif %}">Not Interested</a>
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                                </div>
+
+                        </header>
+
+                        <figure class="events-thumbnail">
+                            <img src="{{ asset('uploads/brochures/' ~ event.photoEvent) }}" alt="{{ event.nameEvent }}" style="width: 1100px ; height: 450px" >
+                        </figure>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="tabs">
+                        <ul class="tabs-nav flex">
+                            <li class="tab-nav flex justify-content-center align-items-center" data-target="#tab_details">Details</li>
+                            <li class="tab-nav flex justify-content-center align-items-center" data-target="#tab_venue">Description</li>
+                            <li class="tab-nav flex justify-content-center align-items-center" data-target="#tab_organizers">Organizer</li>
+                        </ul>
+
+                        <div class="tabs-container">
+                            <div id="tab_details" class="tab-content">
+                                <div class="flex flex-wrap justify-content-between">
+                                    <div class="single-event-details">
+                                        <div class="single-event-details-row">
+                                            <label>Date Event :</label>
+                                            <p>{{ event.dateEvent|date ('Y-m-d') }}</p>
+                                        </div>
+
+                                        <div class="single-event-details-row">
+                                            <label>Date Creation :</label>
+                                            <p>{{ event.dateCreationEvent|date ('Y-m-d') }}</p>
+                                        </div>
+
+                                        <div class="single-event-details-row">
+                                            <label>Categories:</label>
+                                            <p>{{ event.categorieEvent.nameCategorie }}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="single-event-map">
+                                        <iframe id="gmap_canvas" src="https://maps.google.com/maps?q=' {{ event.addressEvent.cityAddress }}'&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="tab_venue" class="tab-content">
+                                <p>Description : {{ event.descriptionEvent }}</p>
+                            </div>
+
+                            <div id="tab_organizers" class="tab-content">
+
+                                    <label>UserName :</label>
+                                    <label>{{ event.adminEvent.username }}</label><br>
+
+                                    <label>First Name :</label>
+                                    <label>{{ event.adminEvent.firstName }}</label><br>
+
+                                    <label>Last Name :</label>
+                                    <label>{{ event.adminEvent.lastName }}</label><br>
+
+                                    <label>Email :</label>
+                                    <label>{{ event.adminEvent.email }}</label><br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="event-tickets">
+                        <div class="ticket-row flex flex-wrap justify-content-between align-items-center">
+                            <div class="ticket-type flex justify-content-between align-items-center">
+                                <h3 class="entry-title"><span>Siver Ticket</span> Basic entry</h3>
+
+                                <div class="ticket-price">$89</div>
+                            </div>
+
+                            <div class="flex align-items-center">
+                                <div class="number-of-ticket flex justify-content-between align-items-center">
+                                    <span class="decrease-ticket">-</span>
+                                    <input type="number" class="ticket-count" value="1" />
+                                    <span class="increase-ticket">+</span>
+                                </div>
+
+                                <div class="clear-ticket-count">Clear</div>
+                            </div>
+
+                            <input type="submit" class="btn gradient-bg" value="Buy Ticket">
+                        </div>
+
+                        <div class="ticket-row flex flex-wrap justify-content-between align-items-center">
+                            <div class="ticket-type flex justify-content-between align-items-center">
+                                <h3 class="entry-title"><span>Gold Ticket</span>Vip entrry</h3>
+
+                                <div class="ticket-price">$199</div>
+                            </div>
+
+                            <div class="flex align-items-center">
+                                <div class="number-of-ticket flex justify-content-between align-items-center">
+                                    <span class="decrease-ticket">-</span>
+                                    <input type="number" class="ticket-count" value="1" />
+                                    <span class="increase-ticket">+</span>
+                                </div>
+
+                                <div class="clear-ticket-count">Clear</div>
+                            </div>
+
+                            <input type="submit" class="btn gradient-bg" value="Buy Ticket">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="upcoming-events">
+                        <div class="upcoming-events-header">
+                            <h4>Upcoming Events</h4>
+                        </div>
+
+                        <div class="upcoming-events-list">
+                            {% for a in lastEvents %}
+                            <div class="upcoming-event-wrap flex flex-wrap justify-content-between align-items-center">
+                                <figure class="events-thumbnail">
+                                    <a href="{{path('event_by_id', {id: a.id})}}"><img src="{{ asset('uploads/brochures/' ~ a.photoEvent) }}" alt=""></a>
+                                </figure>
+
+                                <div class="entry-meta">
+                                    <div class="event-date">
+                                        <span>{{ a.categorieEvent.nameCategorie }}</span>
+                                    </div>
+                                </div>
+
+                                <header class="entry-header">
+                                    <h3 class="entry-title"><a href="#">{{ a.nameEvent }}</a></h3>
+
+                                    <div class="event-date-time">Date Event : {{ a.dateEvent|date ('Y-m-d') }}</div>
+
+                                    <div class="event-speaker">Organizer: {{ a.adminEvent.username }}</div>
+                                </header>
+
+                                <footer class="entry-footer">
+                                    <a href="{{path('event_by_id', {id: a.id})}}">Details</a>
+                                </footer>
+                            </div>
+
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+{% endblock %}
+
+
